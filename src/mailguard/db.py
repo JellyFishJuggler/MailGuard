@@ -1,13 +1,9 @@
+import os
 import sqlite3
 
-DB_NAME = "email.db"
+DB_NAME = os.getenv("MAILGUARD_DB", "email.db")
 
-
-# Create database and table
-connection = sqlite3.connect(DB_NAME)
-cursor = connection.cursor()
-
-cursor.execute("""
+CREATE_TABLE = """
 CREATE TABLE IF NOT EXISTS emails (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     recipient TEXT NOT NULL,
@@ -16,14 +12,21 @@ CREATE TABLE IF NOT EXISTS emails (
     timestamp DATETIME DEFAULT CURRENT_TIMESTAMP,
     status TEXT DEFAULT 'sent'
 )
-""")
+"""
 
-connection.commit()
-connection.close()
+
+def connect():
+    connection = sqlite3.connect(DB_NAME)
+    cursor = connection.cursor()
+
+    cursor.execute(CREATE_TABLE)
+    connection.commit()
+
+    return connection
 
 
 def save_email(recipient, subject, body):
-    connection = sqlite3.connect(DB_NAME)
+    connection = connect()
     cursor = connection.cursor()
 
     cursor.execute(
@@ -39,7 +42,7 @@ def save_email(recipient, subject, body):
 
 
 def get_emails(recipient):
-    connection = sqlite3.connect(DB_NAME)
+    connection = connect()
     cursor = connection.cursor()
 
     cursor.execute(
@@ -51,7 +54,17 @@ def get_emails(recipient):
     )
 
     emails = cursor.fetchall()
+    connection.close()
 
+    return emails
+
+
+def list_emails():
+    connection = connect()
+    cursor = connection.cursor()
+
+    cursor.execute("SELECT * FROM emails")
+    emails = cursor.fetchall()
     connection.close()
 
     return emails

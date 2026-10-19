@@ -1,7 +1,7 @@
 [project]
-name = "mail-approval"
+name = "mailguard"
 version = "0.1.0"
-description = "Add your description here"
+description = "Human in the loop email agent that needs approval before sending"
 readme = "README.md"
 requires-python = ">=3.14"
 dependencies = [
@@ -9,12 +9,16 @@ dependencies = [
     "langchain-community>=0.4.2",
     "langchain-core>=1.6.12",
     "langchain-ollama>=1.1.0",
+    "langchain-openai>=1.1.0",
+    "langchain-google-genai>=2.1.0",
+    "langchain-xai>=0.2.5",
     "langgraph>=1.2.16",
     "pydantic>=2.14.1",
+    "python-dotenv>=1.2.4",
 ]
 
 [project.scripts]
-mail-approval = "mail_approval:main"
+mailguard = "mailguard.main:main"
 
 [build-system]
 requires = ["uv_build>=0.13.1,<0.14.0"]

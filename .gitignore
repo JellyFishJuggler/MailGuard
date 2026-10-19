@@ -12,3 +12,6 @@ wheels/
 # Runtime data
 email.db
 email.db-journal
+
+# Secrets
+.env
