@@ -131,13 +131,13 @@ def build_model():
     raise SystemExit('No model provider available, check your .env file')
 
 
-def build_agent():
+def build_agent(checkpointer=None):
     model = build_model()
 
     return create_agent(
         model=model,
         tools=[sendEmail, readEmail, searchContact],
-        checkpointer=InMemorySaver(),
+        checkpointer=checkpointer or InMemorySaver(),
         middleware=[
             HumanInTheLoopMiddleware(
                 interrupt_on={

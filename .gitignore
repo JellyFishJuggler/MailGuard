@@ -12,6 +12,10 @@ wheels/
 # Runtime data
 email.db
 email.db-journal
+checkpoints.db
+checkpoints.db-journal
+checkpoints.db-wal
+checkpoints.db-shm
 
 # Secrets
 .env
